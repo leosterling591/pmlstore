@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PML STORE - In God We Trust</title>
+<style>
+    /* ===== Reset et style global ===== */
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior:smooth; }
+    body { background-color:#f9f9f9; color:#333; position: relative; }
+    a { text-decoration:none; color:inherit; }
+
+    /* ===== Header ===== */
+    header { display:flex; justify-content:space-between; align-items:center; padding:15px 50px; background-color:#0d6efd; color:white; position:sticky; top:0; z-index:1000; box-shadow:0 4px 8px rgba(0,0,0,0.1);}
+    header .logo img { height:60px; transition:transform 0.3s; }
+    header .logo img:hover { transform:scale(1.05); }
+    header .motto { font-size:14px; font-style:italic; color:#ffc107; margin-left:10px; }
+    nav ul { display:flex; list-style:none; }
+    nav ul li { margin-left:25px; font-weight:500; transition: color 0.3s; }
+    nav ul li a:hover { color:#ffc107; }
+    .lang-select { margin-left:20px; background:#ffc107; color:#000; border:none; padding:5px 10px; border-radius:5px; font-weight:bold; cursor:pointer; transition: background 0.3s; }
+    .lang-select:hover { background:#e0a800; }
+
+    /* ===== Bannière principale ===== */
+    .hero { background:url('LEO.AVIF') center/cover no-repeat; height:500px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; color:white; position:relative; overflow:hidden;}
+    .hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.3);}
+    .hero h1, .hero p, .hero .btn { position:relative; z-index:1; }
+    .hero h1 { font-size:48px; margin-bottom:20px; text-shadow:2px 2px 4px #000; animation:fadeInDown 1s ease; }
+    .hero p { font-size:20px; margin-bottom:30px; text-shadow:1px 1px 3px #000; animation:fadeInUp 1s ease; }
+    .hero .btn { padding:12px 25px; background-color:#ffc107; color:#000; font-weight:bold; border-radius:5px; transition:0.3s; animation:fadeInUp 1.5s ease;}
+    .hero .btn:hover { background-color:#e0a800; transform:scale(1.05);}
+    @keyframes fadeInDown {0% {opacity:0; transform:translateY(-50px);} 100% {opacity:1; transform:translateY(0);}}
+    @keyframes fadeInUp {0% {opacity:0; transform:translateY(50px);} 100% {opacity:1; transform:translateY(0);}}
+
+    /* ===== Section Valeurs ===== */
+    .values { background-color:#e9f2ff; padding:50px; text-align:center; }
+    .values h2 { font-size:32px; margin-bottom:40px; color:#0d6efd; }
+    .value-cards { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; }
+    .value-card { background:white; padding:20px; border-radius:10px; width:250px; box-shadow:0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; opacity:0; transform:translateY(50px);}
+    .value-card.visible { opacity:1; transform:translateY(0); }
+    .value-card:hover { transform:translateY(-10px); box-shadow:0 10px 25px rgba(0,0,0,0.2); }
+    .value-card h3 { margin-bottom:15px; color:#0d6efd; }
+
+    /* ===== Section Promotions ===== */
+    .promotions { padding:50px; text-align:center; }
+    .promotions h2 { font-size:32px; margin-bottom:40px; color:#0d6efd; }
+    .promo-card { background:#ffc107; padding:20px; border-radius:10px; color:#000; margin-bottom:20px; transition: transform 0.3s; opacity:0; transform:translateY(50px);}
+    .promo-card.visible { opacity:1; transform:translateY(0);}
+    .promo-card:hover { transform:scale(1.05); }
+
+    /* ===== Section Témoignages ===== */
+    .testimonials { background-color:#f1f3f5; padding:50px; text-align:center; }
+    .testimonials h2 { font-size:32px; margin-bottom:40px; color:#0d6efd; }
+    .testimonial-card { background:white; padding:20px; border-radius:10px; width:300px; display:inline-block; margin:10px; box-shadow:0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s; opacity:0; transform:translateY(50px);}
+    .testimonial-card.visible { opacity:1; transform:translateY(0);}
+    .testimonial-card:hover { transform:translateY(-10px); }
+
+    /* ===== Newsletter ===== */
+    .newsletter { padding:50px; text-align:center; background:#0d6efd; color:white;}
+    .newsletter h2 { font-size:32px; margin-bottom:20px; }
+    .newsletter input[type="email"] { padding:10px; width:300px; max-width:80%; border:none; border-radius:5px; margin-right:10px;}
+    .newsletter button { padding:10px 20px; border:none; border-radius:5px; background:#ffc107; font-weight:bold; cursor:pointer; transition:0.3s;}
+    .newsletter button:hover { background:#e0a800; }
+
+    /* ===== Footer ===== */
+    footer { background-color:#0d6efd; color:white; padding:30px 50px; display:flex; flex-direction:column; align-items:center; gap:15px; text-align:center; }
+    footer a { color:#ffc107; margin:0 10px; }
+    .social-icons { display:flex; align-items:center; gap:15px; }
+    .social-icons img { transition: transform 0.3s; cursor:pointer;}
+    .social-icons img:hover { transform:scale(1.2); }
+
+    /* ===== Bouton WhatsApp flottant ===== */
+    .whatsapp-btn { position:fixed; bottom:20px; right:20px; background:#25D366; color:white; border-radius:50%; width:60px; height:60px; display:flex; justify-content:center; align-items:center; font-size:30px; box-shadow:0 5px 15px rgba(0,0,0,0.3); cursor:pointer; z-index:1000; transition:transform 0.3s; }
+    .whatsapp-btn:hover { transform:scale(1.1); }
+
+    /* ===== Responsive ===== */
+    @media(max-width:768px){
+        header { flex-direction:column; text-align:center;}
+        .value-cards { flex-direction:column; align-items:center;}
+    }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+    <div class="logo">
+        <img src="LOGO pml.jpg" alt="PML STORE Logo">
+    </div>
+    <div class="motto">In God We Trust</div>
+    <nav>
+        <ul>
+            <li><a href="Accueil.html">Accueil</a></li>
+            <li><a href="Nos produits.html">Nos produits</a></li>
+            <li><a href="#">Promotions</a></li>
+            <li><a href="Contact.html">Contact</a></li>
+            <li><a href="À propos.html">À propos</a></li>
+        </ul>
+    </nav>
+    <select class="lang-select" onchange="changeLanguage(this.value)">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+    </select>
+</header>
+
+<!-- Bannière principale -->
+<section class="hero">
+    <h1>Bienvenue chez PML STORE</h1>
+    <p>La technologie à votre portée</p>
+    <a href="#" class="btn">Voir nos produits</a>
+</section>
+
+<!-- Section Valeurs -->
+<section class="values">
+    <h2>Pourquoi nous choisir ?</h2>
+    <div class="value-cards">
+        <div class="value-card"> <h3>Qualité</h3><p>Des produits fiables et durables.</p></div>
+        <div class="value-card"> <h3>Livraison rapide</h3><p>Recevez vos commandes rapidement chez vous.</p></div>
+        <div class="value-card"> <h3>Prix accessibles</h3><p>Des tarifs adaptés à tous les budgets.</p></div>
+        <div class="value-card"> <h3>Confiance</h3><p>Notre motto : In God We Trust.</p></div>
+    </div>
+</section>
+
+<!-- Promotions -->
+<section class="promotions">
+    <h2>Promotions du moment</h2>
+    <div class="promo-card">-10% sur tous les câbles HDMI cette semaine !</div>
+    <div class="promo-card">Pack clavier + souris à prix réduit !</div>
+</section>
+
+<!-- Témoignages -->
+<section class="testimonials">
+    <h2>Avis de nos clients</h2>
+    <div class="testimonial-card">“Merci PML STORE pour ma souris gaming, livraison rapide et produit de qualité !” – Kevin D.</div>
+    <div class="testimonial-card">“Excellent service et produits fiables. Je recommande !” – Alice M.</div>
+</section>
+
+<footer>
+    <div>
+        <a href="Accueil.html">Accueil</a>
+        <a href="Nos produits.html">Nos produits</a>
+        <a href="#">Promotions</a>
+        <a href="Contact.html">Contact</a>
+        <a href="À propos.html">À propos</a>
+    </div>
+    <div class="social-icons">
+        <a href="https://www.facebook.com/lesterling9" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/124/124010.png" alt="Facebook" height="30"></a>
+        <a href="https://www.instagram.com/lesterling9" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" height="30"></a>
+        <a href="https://www.tiktok.com/lesterling9" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046125.png" alt="TikTok" height="30"></a>
+    </div>
+    <p>PML STORE – In God We Trust | pmlstore4@gmail.com</p>
+</footer>
+
+<!-- Bouton WhatsApp -->
+<div class="whatsapp-btn" onclick="window.open('https://wa.me/237691851322','_blank')">📱</div>
+
+<script>
+function changeLanguage(lang){
+    if(lang==="en"){
+        document.querySelector('.hero h1').textContent="Welcome to PML STORE";
+        document.querySelector('.hero p').textContent="Technology at your fingertips";
+        document.querySelector('.values h2').textContent="Why choose us?";
+        document.querySelectorAll('.value-card h3')[0].textContent="Quality";
+        document.querySelectorAll('.value-card p')[0].textContent="Reliable and durable products.";
+        document.querySelectorAll('.value-card h3')[1].textContent="Fast Delivery";
+        document.querySelectorAll('.value-card p')[1].textContent="Receive your orders quickly at home.";
+        document.querySelectorAll('.value-card h3')[2].textContent="Affordable Prices";
+        document.querySelectorAll('.value-card p')[2].textContent="Prices suitable for all budgets.";
+        document.querySelectorAll('.value-card h3')[3].textContent="Trust";
+        document.querySelectorAll('.value-card p')[3].textContent="Our motto: In Good We Trust.";
+        document.querySelector('.promotions h2').textContent="Current Promotions";
+        document.querySelectorAll('.promo-card')[0].textContent="-10% on all HDMI cables this week!";
+        document.querySelectorAll('.promo-card')[1].textContent="Keyboard + Mouse pack at reduced price!";
+        document.querySelector('.testimonials h2').textContent="Customer Reviews";
+        document.querySelector('.newsletter h2').textContent="Subscribe to our newsletter";
+        document.querySelector('.newsletter button').textContent="Subscribe";
+    } else { location.reload(); }
+}
+
+// ===== Animations scroll =====
+function reveal() {
+    const cards = document.querySelectorAll('.value-card, .promo-card, .testimonial-card');
+    cards.forEach(card => {
+        const top = card.getBoundingClientRect().top;
+        const height = window.innerHeight / 1.3;
+        if(top < height) card.classList.add('visible');
+    });
+}
+window.addEventListener('scroll', reveal);
+reveal();
+</script>
+
+</body>
+</html>
